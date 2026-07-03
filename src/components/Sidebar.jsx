@@ -1,4 +1,4 @@
-import { Bird, Files, LayoutDashboard, PlusCircle, Users } from 'lucide-react'
+import { Bird, Files, LayoutDashboard, PlusCircle, UserPlus, Users } from 'lucide-react'
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
@@ -7,7 +7,8 @@ const Sidebar = () => {
     const Sides = [
         {name:'Dashboard',link:'/',icon: <LayoutDashboard size={20}/>},
         {name:'Create Attendance',link:'/createattendance',icon: <PlusCircle size={20}/>},
-        {name:'All Attendance',link:'/allattendance',icon: <Files size={20}/>},
+        {name:'All Attendance',link:'/allattendance',icon: <Files size={20}/>},        
+        {name:'Add Member',link:'/addmember',icon: <UserPlus size={20}/>},
         {name:'Members List',link:'/memberslist',icon: <Users size={20}/>}
     ]
   return (
@@ -29,7 +30,7 @@ const Sidebar = () => {
                             <Link 
                             to={item.link}
                             key={index}
-                            className={`w-full p-3 cursor-pointer duration-200 flex justify-between items-center ${index == 0 ? 'rounded-lg rounded-t-3xl' : index == 3 ? 'rounded-lg rounded-b-3xl' : 'rounded-lg'}
+                            className={`w-full p-3 cursor-pointer duration-200 flex justify-between items-center ${index == 0 ? 'rounded-lg rounded-t-3xl' : index == 4 ? 'rounded-lg rounded-b-3xl' : 'rounded-lg'}
                                 ${location == item.link ? 'bg-gradient-to-br from-blue-600 to-blue-800 text-white' : 'bg-blue-100 hover:bg-blue-200'}`}>
                                 <span className="font-bold text-xs">
                                     {item.name}

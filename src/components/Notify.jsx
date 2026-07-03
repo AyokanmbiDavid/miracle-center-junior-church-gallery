@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { all_provider } from './ContextProvider';
 import { CheckCircle2, AlertCircle, Loader2, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import MorphingBox from './MorphingBox';
 
 const Notification = () => {
   const { notifystatus, closenotify } = useContext(all_provider);
@@ -38,7 +39,7 @@ const Notification = () => {
   return (
     <AnimatePresence>
       {notifystatus.show && (
-        <div className="fixed top-8 left-0 right-0 z-[9999] flex justify-center pointer-events-none px-4">
+        <div className="fixed bottom-20 left-0 right-0 z-[9999] flex justify-end pointer-events-none px-4">
           <motion.div 
             // M3 "Entrance/Exit" Spring
             initial={{ opacity: 0, y: -40, scale: 0.9 }}
@@ -63,7 +64,9 @@ const Notification = () => {
             {/* Message Body */}
             <span className={`flex-grow text-sm font-medium tracking-tight ${current.text}`}>
               {notifystatus.message}
-            </span>
+            </span>  
+
+            {notifystatus.type == "loading" && <MorphingBox/>}
 
             {/* Close Button (Hidden on Loading) */}
             {notifystatus.type !== 'loading' && (
@@ -71,6 +74,7 @@ const Notification = () => {
                 onClick={closenotify} 
                 className={`p-1.5 rounded-full hover:bg-black/5 transition-colors ${current.text}`}
               >
+                
                 <X size={16} />
               </button>
             )}

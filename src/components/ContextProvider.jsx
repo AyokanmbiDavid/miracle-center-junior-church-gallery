@@ -1,11 +1,12 @@
 import axios from 'axios';
-import React, { createContext, useState, useEffect, useCallback } from 'react';
-import { useIndexedDB } from '../hooks/useIndexedDB';
+import React, { createContext, useState, useEffect, useCallback, useMemo } from 'react';
 
 export const all_provider = createContext();
 
+const URL1 = 'http://localhost:5000/api';
+
 const api = axios.create({
-  baseURL: "https://teens-attendance-backend.onrender.com/api",
+  baseURL: URL1,
   timeout: 15000, 
   headers: {
     'Content-Type': 'application/json',
@@ -14,220 +15,133 @@ const api = axios.create({
 });
 
 const ContextProvider = ({ children }) => { 
-  const [currentclass,setcurrentclass] = useState('four')
+  const [currentclass, setcurrentclass] = useState('four');
   const [searchresult, setsearchresult] = useState([]);
-  const [attendance,setattendance] = useState([
-              {
-                theclass:'four',
-                month:'february',
-                year:'2026',
-                week:'week 1',
-                roll:[
-                    {
-                        firstname:'Ayo',
-                        lastname:'Demilade',
-                        present: true
-                    },
-                     {
-                        firstname:'Temi',
-                        lastname:'Adewale',
-                        present: false
-                    },
-                     {
-                        firstname:'Dayo',
-                        lastname:'Adeshina',
-                        present: true
-                    },
-                     {
-                        firstname:'Grin',
-                        lastname:'Tommy',
-                        present: true
-                    },
-                     {
-                        firstname:'Bello',
-                        lastname:'affga',
-                        present: false
-                    },
-                ]},
-              {
-                theclass:'six',
-                month:'february',
-                year:'2026',
-                week:'week 1',
-                roll:[
-                    {
-                        firstname:'Bisi',
-                        lastname:'Oladipo',
-                        present: true
-                    },
-                     {
-                        firstname:'Temi',
-                        lastname:'Adewale',
-                        present: false
-                    },
-                     {
-                        firstname:'Olorun',
-                        lastname:'gbemisoke',
-                        present: true
-                    },
-                     {
-                        firstname:'Grin',
-                        lastname:'Tommy',
-                        present: true
-                    },
-                     {
-                        firstname:'Sayo',
-                        lastname:'Tomiwa',
-                        present: false
-                    },
-                ]},
-              {
-                theclass:'nine',
-                month:'february',
-                year:'2026',
-                week:'week 1',
-                roll:[
-                    {
-                        firstname:'bolu',
-                        lastname:'desmond',
-                        present: true
-                    },
-                     {
-                        firstname:'kemi',
-                        lastname:'Adesewa',
-                        present: false
-                    },
-                     {
-                        firstname:'victoria',
-                        lastname:'praise',
-                        present: true
-                    },
-                     {
-                        firstname:'Grin',
-                        lastname:'htt',
-                        present: true
-                    },
-                     {
-                        firstname:'tayo',
-                        lastname:'adenuga',
-                        present: false
-                    },
-              ]}]);
-
-  const [attenddate,setattenddate] = useState({
-      year: '2026',
-      week:'week 1',
-      month: 'febuary'
-    });
-  
-  // Upgraded IndexedDB hooks preserved for robust offline performance
-  const [alldata, setalldata, membersReady] = useIndexedDB("members", []);
-  
+  const [attendance, setattendance] = useState(null);
   const [currentroll, setcurrentroll] = useState({ roll: [] });
-  
-  const [attendancedate, setattendancedate] = useState(() => 
-    JSON.parse(localStorage.getItem('attendancedate')) || { year: "2026", month: "march", week: "week 1" }
-  );
+  const [notifystatus, setnotifystatus] = useState({ type: "loading", message: "", show: true });
 
-  const [notifystatus, setnotifystatus] = useState({ type: "", message: "", show: false });
+  // Initialize date safely from localStorage
+  const [attenddate, setattenddate] = useState(() => {
+    const saved = localStorage.getItem("attendancedate");
+    return saved ? JSON.parse(saved) : { year: "2026", month: "march", week: "week 1" };
+  });
 
-  const Notify = (type, message) => {
+  // Sync state changes back to localStorage
+  useEffect(() => {
+    localStorage.setItem('attendancedate', JSON.stringify(attenddate));
+  }, [attenddate]);
+
+  // Replaced useIndexedDB with a standard, temporary React state array
+  const [alldata, setalldata] = useState([]);
+
+  // Notifications
+  const Notify = useCallback((type, message) => {
     setnotifystatus({ type, message, show: true });
-    if (type !== "loading") setTimeout(() => setnotifystatus({ type: "", message: "", show: false }), 3000);
-  };
+    if (type !== "loading") {
+      setTimeout(() => setnotifystatus({ type: "", message: "", show: false }), 3000);
+    }
+  }, []);
 
-  const closenotify = () => setnotifystatus({ type: "", message: "", show: false });
+  const closenotify = useCallback(() => setnotifystatus({ type: "", message: "", show: false }), []);
 
-  // 1. Fetch Members Target (Clean Array)
+  // Fetch Directory Children Members using the class dynamic endpoint wrapper
   const fetchMembers = useCallback(async () => {
     try {
       Notify("loading", 'updating member directory');
-      const mRes = await api.get('/members');
-      setalldata(mRes.data);
+      const mRes = await api.get(`/member/${currentclass}`);
+      setalldata(mRes.data); // Saves temporary data directly into React memory state
       Notify("success", "members updated");
     } catch (err) {
       console.error("Member sync failed.", err.message);
       Notify('failure', 'could not update members');
     }
-  }, []);
+  }, [Notify, currentclass]);
 
-  // 2. Fetch Attendance Target (Fetches full list, no page limit counters)
-  const fetchAttendance = useCallback(async () => {
-    try {
-      Notify("loading", 'updating attendance history');
-      const aRes = await api.get('/attendance');
-      
-      // Handle either wrapped data payloads or plain array streams safely
-      const fetchedHistory = aRes.data.data || aRes.data; 
-      setattendance(fetchedHistory);
-      
-      Notify("success", "attendance updated");
-    } catch (err) {
-      console.error("Attendance data synced.", err.message);
-      Notify('failure', 'could not update attendance');
-    }
-  }, []);
+  // Sync directory if class view changes
+  useEffect(() => {
+    fetchMembers();
+  }, [currentclass, fetchMembers]);
 
-  // 3. Combined Refresh Core Action
-  const fetchEverything = useCallback(async () => {
+  // Core Refresh Action - Uses fresh targetDate parameter to avoid stale closures
+  const fetchEverything = useCallback(async (targetDate) => {
+    const queryDate = targetDate || attenddate; 
     try {
       Notify("loading", 'syncing all data...');
-      const [mRes, aRes] = await Promise.all([
-        api.get('/members'),
-        api.get('/attendance')
-      ]);
-
-      setalldata(mRes.data);
-      setattendance(aRes.data.data || aRes.data);
+      const attres = await api.post('/children/attendance/filter', {
+        year: queryDate.year, 
+        month: queryDate.month, 
+        week: queryDate.week
+      });
       
+      if (attres.data && attres.data) {
+        setattendance(attres.data);
+      } else {
+        setattendance(null);
+      }
       Notify("success", "Connected");
     } catch (err) {
-      console.error("Full sync failed.", err.message);
+      console.error("Full sync failed.", err);
       Notify('failure', 'network sync failed');
     }
-  }, []);
+  }, [Notify, attenddate]);
 
-  // // Initial Startup Run
-  // useEffect(() => {
-  //   if (membersReady && attendanceReady) {
-  //     fetchEverything();
-  //   }
-  // }, [membersReady, attendanceReady]);
+  // Fetch automatically whenever dates alter
+  useEffect(() => {
+    fetchEverything(attenddate);
+  }, [attenddate, fetchEverything]);
 
-  // // Synchronize Active Calendar Dropdown Matches
-  // useEffect(() => {
-  //   const found = attendance.find(att => 
-  //     String(att.year) === String(attendancedate.year) && 
-  //     att.month === attendancedate.month && 
-  //     att.week === attendancedate.week
-  //   );
-  //   setcurrentroll(found || { roll: [] });
-  //   localStorage.setItem('attendancedate', JSON.stringify(attendancedate));
-  // }, [attendancedate, attendance]);
+const addnewmember = async (surname, firstname, middlename, dateofbirth, gender) => {
+  Notify("loading", "Adding new member");
 
-  // Member Action Mutations
-  const addnewmember = async (surname, firstName, middleName, phoneNumber, dateOfBirth, gender, emailAddress) => {
-    Notify("loading", "Adding new member");
-    const findmember = alldata.find(e => e.surname == surname && e.firstName == firstName && e.middleName == middleName);
+  // 1. Fixed: Standardized to use lowercase parameters 'firstname' and 'middlename'
+  const exists = alldata.some(
+    e => e.lastname === surname && 
+         e.firstname === firstname && 
+         e.middlename === middlename
+  );
 
-    if (!findmember) {
-      try {
-        await api.post('/members', { surname, firstName, middleName, phoneNumber, dateOfBirth, gender, emailAddress });
-        await fetchMembers(); 
-        Notify("success", "New Member Added");
-      } catch (err) { 
-        Notify("failure", "Failed to add member");
-        console.error(err);
-      } 
-    } else {
-      Notify('failure', 'Member data already registered');
-    }
-  };
+  if (!exists) {
+    try {
+      // 2. Fixed: Mapped lowercase parameters into your backend payload keys
+      const payload = { 
+        lastname: surname, 
+        firstname: firstname, 
+        middlename: middlename || "", 
+        dateofbirth: dateofbirth, 
+        gender: gender?.toLowerCase()
+      };
+
+      // Debug log to confirm exact data fields before network transmission
+      console.log("Sending Fused Member Payload:", payload);
+
+      // 3. Make the API call to your fused dynamic route parameter wrapper
+      await api.post(`/member/${currentclass}`, payload);
+      
+      await fetchMembers(); 
+      Notify("success", "New Member Added");
+    } catch (err) { 
+      Notify("failure", "Failed to add member");
+      console.error("Add member network error details:", err.response?.data || err.message);
+    } 
+  } else {
+    Notify('failure', 'Member data already registered');
+  }
+};
+
+
 
   const updatemember = async (id, data) => {
     Notify("loading", "Updating...");
     try {
-      await api.put(`members/${id}`, data);
+      await api.put(`/member/${currentclass}/${id}`, {
+        lastname: data.surname,
+        firstname: data.firstName,
+        middlename: data.middleName,
+        dob: data.dateOfBirth,
+        gender: data.gender?.toLowerCase(),
+        active: data.active
+      });
       await fetchMembers(); 
       Notify("success", "member data updated");
     } catch (err) { Notify("failure", "Failed"); console.error(err); }
@@ -236,40 +150,43 @@ const ContextProvider = ({ children }) => {
   const deletemember = async (id) => {
     Notify("loading", "Deleting...");
     try {
-      await api.delete(`/members/${id}`);
+      await api.delete(`/member/${currentclass}/${id}`);
       await fetchMembers(); 
       Notify("success", "Member Deleted");
     } catch (err) { Notify("failure", "Failed to delete member"); console.error(err); }
   };
 
-  const markattendance = async(indexi, status) => {
-    let filt = attendance.find(item => item.theclass == currentclass);
-    
-    const newfilt = filt.roll.map((item,index) => index == indexi ? {
-                        firstname:item.firstname,
-                        lastname:item.lastname,
-                        present: status
-                    } : item);
-    
-    
-    const newfiltindex = {
-      theclass: filt.theclass,
-      year:filt.year,
-      month:filt.month,
-      week: filt.week,
-      roll: newfilt
-    }
-    setattendance(attendance.map(item => item.theclass == currentclass ? newfiltindex : item))
+  // Safe Immutable Attendance State Updates aligned to your database document structure
+  const markattendance = (id, status) => {
+    if (!attendance || !attendance.attroll) return;
+
+    setattendance(prev => ({
+      ...prev,
+      attroll: prev.attroll.map(classGroup => 
+        classGroup.theclass !== currentclass 
+          ? classGroup 
+          : {
+              ...classGroup,
+              roll: classGroup.roll.map(student => 
+                student.id !== id 
+                  ? student 
+                  : { ...student, present: status }
+              )
+            }
+      )
+    }));
   };
 
   // Attendance Action Mutations
   const createattendance = async (year, month, week) => {
     Notify("loading", "Creating New Attendance");
-    const findattendance = attendance.find(e => e.year == year && e.week == week && e.month == month);
-    if (!findattendance) {
+    const arrayAttendance = Array.isArray(attendance) ? attendance : [];
+    const exists = arrayAttendance.find(e => e.year === year && e.week === week && e.month === month);
+    
+    if (!exists) {
       try {
-        await api.post('/attendance', { year, month, week });
-        await fetchAttendance(); 
+        await api.post('/children/attendance', { year, month, week });
+        await fetchEverything({ year, month, week }); 
         Notify('success', "new attendance created");
       } catch (error) {
         Notify("failure", "failed to create attendance");
@@ -279,10 +196,11 @@ const ContextProvider = ({ children }) => {
     }
   };
 
-  const updateattendance = async (_id, alldata) => {
+  const updateattendance = async (id, currentAttendanceState) => {
+    Notify("loading", "updating attendance");
     try {  
-      await api.put(`/attendance/mark/${_id}`, alldata);
-      await fetchAttendance(); 
+      await api.put(`/children/attendance/${id}`, { attroll: currentAttendanceState.attroll });
+      await fetchEverything(); 
       Notify('success', "Attendance submitted");
     } catch (err) {
       Notify("failure", "Failed to submit attendance");
@@ -293,24 +211,22 @@ const ContextProvider = ({ children }) => {
   const deleteattendance = async (id) => {
     Notify("loading", "Deleting...");
     try {
-      await api.delete(`/attendance/${id}`);
-      await fetchAttendance(); 
+      await api.delete(`/children/attendance/${id}`);
+      await fetchEverything(); 
       Notify("success", "Attendance deleted successfully");
     } catch (err) { Notify("failure", "Error"); console.error(err); }
   };
 
+  const contextValue = useMemo(() => ({
+    alldata, currentroll, searchresult, currentclass, setcurrentclass,
+    attenddate, setattenddate, attendance, setattendance,
+    addnewmember, updatemember, deletemember, markattendance, createattendance, deleteattendance,
+    updateattendance, Notify, notifystatus, closenotify, 
+    refresh: fetchEverything 
+  }), [alldata, currentroll, searchresult, currentclass, attenddate, attendance, fetchEverything, notifystatus, closenotify, Notify]);
+
   return (
-    <all_provider.Provider value={{
-      alldata, currentroll, searchresult, currentclass,setcurrentclass,
-      attenddate, setattenddate, attendance,setattendance,
-      setyear: (val) => setattendancedate(prev => ({ ...prev, year: val })),
-      setmonth: (val) => setattendancedate(prev => ({ ...prev, month: val })),
-      setweek: (val) => setattendancedate(prev => ({ ...prev, week: val })),
-      addnewmember, updatemember, deletemember, markattendance, createattendance, deleteattendance,
-      updateattendance,
-      Notify, notifystatus, closenotify, 
-      refresh: fetchEverything 
-    }}>
+    <all_provider.Provider value={contextValue}>
       {children}
     </all_provider.Provider>
   );

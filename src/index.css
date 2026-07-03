@@ -43,7 +43,45 @@ body {
   }
 }
 
+.scene3d {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1000px;
+}
 
+.box3d {
+  width: 20px;
+  height: 20px;
+  border-radius: 12px;
+  transition: all 1s ease-in-out;
+  transform-style: preserve-3d;
+  animation: spin3d 1s linear infinite;
+}
+
+.box3d.circle {
+  border-radius: 50%;
+}
+
+@keyframes spin3d {
+  0% {
+    border-radius: 0%;
+  }
+  25% {
+    border-radius: 25%;
+  }
+  50% {
+    border-radius: 50%;
+  }
+  75% {
+    border-radius: 70%;
+  }
+  100% {
+    border-radius: 0%;
+  }
+}
 @custom-variant dark (&:where(.dark, .dark *))
 
 

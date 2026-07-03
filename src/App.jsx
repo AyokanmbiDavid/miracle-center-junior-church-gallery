@@ -7,21 +7,41 @@ import { all_provider } from './components/ContextProvider.jsx'
 import Sidebar from './components/Sidebar.jsx'
 import BottomBar from './components/BottomBar.jsx'
 import CreateAttendance from './pages/CreateAttendance.jsx'
+
+// Importing your newly added pages
+import AttendanceHistory from './pages/AttendanceHistory.jsx'
+import AddMember from './pages/AddMember.jsx'
+import MemberList from './pages/MemberList.jsx'
+
 const App = () => {
-  const {notifystatus} = useContext(all_provider)
+  const { notifystatus } = useContext(all_provider)
+  
   return (
     <>
-      {notifystatus.show == true && 
-      <Notify/>}
-      <div className="flex max-md:flex-col w-full h-screen overflow-hidden">
-        <Sidebar/>
-        <div className="w-full h-9/10">
+      {notifystatus.show === true && <Notify />}
+      
+      <div className="flex max-md:flex-col w-full min-h-screen bg-gray-50">
+        {/* Navigation Sidebar for Large Screens */}
+        <Sidebar />
+        
+        {/* Main Routed Content Viewport */}
+        <div className="w-full pb-16 md:pb-0">
           <Routes>
-           <Route path='/' element={<HomePage/>} />
-           <Route path='/createattendance' element={<CreateAttendance/>} />
+            {/* Core Sheet Workspace Dashboard */}
+            <Route path='/' element={<HomePage />} />
+            
+            {/* Roster & Attendance Creation Management Views */}
+            <Route path='/createattendance' element={<CreateAttendance />} />
+            <Route path='/allattendance' element={<AttendanceHistory />} />
+            
+            {/* Directory Profile Mutation Panels */}
+            <Route path='/addmember' element={<AddMember />} />
+            <Route path='/memberslist' element={<MemberList />} />
           </Routes>
         </div>
-        <BottomBar/>
+        
+        {/* Bottom Navigation Ribbon Bar for Small Viewports */}
+        <BottomBar />
       </div>
     </>
   )
