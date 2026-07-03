@@ -7,7 +7,7 @@ import { all_provider } from '../components/ContextProvider'
 
 const HomePage = () => {
   const [searchfilter, setsearchfilter] = useState('');
-  const { currentclass, attendance, attenddate, setattenddate, updateattendance } = useContext(all_provider);
+  const { currentclass, attendance, attenddate, setattenddate, updateattendance,refresh } = useContext(all_provider);
   const [filtroll, setfiltroll] = useState([]);
 
   // Dynamic selector value assignment
@@ -36,8 +36,8 @@ const HomePage = () => {
 
   return (
     <div>
-      <Navbar />
-      <div className="w-full max-sm:max-h-[700px] overflow-y-auto relative px-2">
+      <Navbar refreshfuc={refresh} />
+      <div className="w-full max-sm:max-h-[700px] h-screen  overflow-y-auto relative px-2">
         {/* Top Analytics Dashboard Cards */}        
         <div className="w-full flex max-lg:flex-col gap-3 py-5">
           <StatCard label="Total Number of Children" val={totalCount} icon={<Users size={22} />} delayanimate={0} tone="blue" />

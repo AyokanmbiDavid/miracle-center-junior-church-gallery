@@ -7,7 +7,7 @@ import autoTable from 'jspdf-autotable';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const MemberListPage = () => {
-  const { alldata, currentclass, updatemember, deletemember } = useContext(all_provider);
+  const { alldata, currentclass, updatemember, deletemember,fetchMembers} = useContext(all_provider);
   const [editingId, setEditingId] = useState(null);
   const [editForm, setEditForm] = useState({});
   const [copiedId, setCopiedId] = useState(null);
@@ -34,30 +34,29 @@ const MemberListPage = () => {
     doc.setFont("helvetica", "bold");
     doc.setFontSize(16);
     doc.setTextColor(33, 0, 93);
-    doc.text(`CLASS ROSTER DIRECTORY - CATEGORY ${currentclass.toUpperCase()}`, 14, 20);
+    doc.text(`CLASS - CATEGORY ${currentclass.toUpperCase() == "6" ? "6 to 8" : currentclass == "4" ? "4 to 5":"9 to 12"}`, 14, 20);
     
     const body = alldata.map((m, idx) => [
       idx + 1,
       `${m.lastname} ${m.firstname} ${m.middlename || ''}`,
       m.gender,
       m.age || 'N/A',
-      m.active ? 'Active' : 'Inactive'
     ]);
 
     autoTable(doc, {
       startY: 28,
-      head: [['S/N', 'Full Name', 'Gender', 'Calculated Age', 'Status']],
+      head: [['S/N', 'Full Name', 'Gender', 'Current Age']],
       body: body,
       headStyles: { fillColor: [103, 80, 164] },
       theme: 'striped'
     });
 
-    doc.save(`Roster_Class_${currentclass}.pdf`);
+    doc.save(`Class_${currentclass == "6" ? "6 to 8" : currentclass == "4" ? "4 to 5":"9 to 12"}.pdf`);
   };
 
   return (
     <div className="min-h-screen bg-[#FDF8FF] text-[#1C1B1F] ">
-      <Navbar />
+      <Navbar refreshfuc={fetchMembers} />
       <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
         
         {/* Top Control Block */}
@@ -67,12 +66,12 @@ const MemberListPage = () => {
               <Users size={22} />
             </div>
             <div>
-              <h1 className="text-xl font-bold tracking-tight text-[#1C1B1F] capitalize">Class Directory: {currentclass}</h1>
-              <p className="text-xs font-medium text-[#49454F] mt-0.5">Modify profiles, copy text tokens, or generate backups</p>
+              <h1 className="text-xl font-bold tracking-tight text-[#1C1B1F] capitalize">Children's Full List</h1>
+              <p className="text-xs font-medium text-[#49454F] mt-0.5">Read,copy and edit child's info</p>
             </div>
           </div>
           <button onClick={downloadRosterPDF} className="m3-state-layer h-11 px-5 bg-[#386A20] hover:bg-[#2d5519] text-white font-bold text-xs rounded-full flex items-center gap-2 m3-elevation-1 hover:m3-elevation-2 transition cursor-pointer">
-            <Download size={14} /> Download Class Roster PDF
+            <Download size={14} /> Download Full Class List PDF
           </button>
         </div>
 

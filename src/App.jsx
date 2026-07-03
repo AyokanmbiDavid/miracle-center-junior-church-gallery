@@ -20,7 +20,7 @@ const App = () => {
     <>
       {notifystatus.show === true && <Notify />}
       
-      <div className="flex max-md:flex-col w-full min-h-screen bg-gray-50">
+      <div className="flex max-md:flex-col w-full h-screen overflow-y-hidden bg-gray-50">
         {/* Navigation Sidebar for Large Screens */}
         <Sidebar />
         

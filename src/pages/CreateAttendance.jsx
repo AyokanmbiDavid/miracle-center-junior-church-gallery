@@ -36,7 +36,7 @@ const CreateAttendancePage = () => {
                     Year
                   </label>
                   <select 
-                  className='bg-white border-0 py-3 rounded-2xl'
+                  className='bg-white border-0 py-3 rounded-2xl text-xs'
                   onChange={(e)  => setFormData(prev => ({...prev, year:e.target.value}))}
                   >
                     {['2025','2026'].map(e => (
@@ -51,8 +51,8 @@ const CreateAttendancePage = () => {
                     Month
                   </label>
                   <select 
-                  className='bg-white border-0 py-3 rounded-2xl'
-                  onChange={(e)  => setFormData(prev => ({...prev, year:e.target.value}))}
+                  className='bg-white border-0 py-3 rounded-2xl text-xs'
+                  onChange={(e)  => setFormData(prev => ({...prev, month:e.target.value}))}
                   >
                     {['january','february','march','april','may','june','july','august','september','october','november','december'].map(e => (
                       <option value={e}>{e}</option>
@@ -66,8 +66,8 @@ const CreateAttendancePage = () => {
                     Week
                   </label>
                   <select 
-                  className='bg-white border-0 py-3 rounded-2xl'
-                  onChange={(e)  => setFormData(prev => ({...prev, year:e.target.value}))}
+                  className='bg-white border-0 py-3 rounded-2xl text-xs'
+                  onChange={(e)  => setFormData(prev => ({...prev, week:e.target.value}))}
                   >
                     {['week 1','week 2','week 3','week 4','week 5',].map(e => (
                       <option value={e}>{e}</option>

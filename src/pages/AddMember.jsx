@@ -15,7 +15,7 @@ const AddMemberPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FDF8FF] text-[#1C1B1F] ">
+    <div className="overflow-y-auto h-screen bg-[#FDF8FF] text-[#1C1B1F] ">
       <Navbar />
       <div className="w-full max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
         
