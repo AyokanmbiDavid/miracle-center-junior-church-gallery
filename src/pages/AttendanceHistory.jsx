@@ -17,13 +17,45 @@ const anim = {
   header: { hidden: { opacity: 0, y: -20 }, show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 140, damping: 18 } } }
 };
 
+// Sub-component for Date Selection Dropdowns
+const DateSelect = ({ value, onchange, options, type }) => (
+  <div className="relative group grow sm:grow-0">
+    <select 
+      value={value} 
+      onChange={(e) => onchange(type, e.target.value)} 
+      className={`appearance-none w-full bg-blue-100 rounded-xl ${type === 'year' ? 'rounded-l-3xl' : type === 'week' ? 'rounded-r-3xl' : ''} pl-5 pr-5 p-4.5 text-xs font-medium capitalize border-0 outline-none transition-all cursor-pointer hover:bg-blue-200 duration-200`}
+    >
+      {options.map(o => <option key={o} value={o}>{o}</option>)}
+    </select>
+  </div>
+);
+
 const AttendanceHistoryPage = () => {
-  const { currentclass, allAttendanceHistory, deleteattendance,fetchAllHistory } = useContext(all_provider);
+  const { currentclass, allAttendanceHistory, deleteattendance, fetchAllHistory } = useContext(all_provider);
   const [historyList, setHistoryList] = useState([]);
+  
+  // Default values initialized to 'all' to show everything by default
+  const [attenddate, setAttenddate] = useState({
+    year: 'all',
+    month: 'all',
+    week: 'all'
+  });
 
   useEffect(() => {
     setHistoryList(Array.isArray(allAttendanceHistory) ? allAttendanceHistory : allAttendanceHistory ? [allAttendanceHistory] : []);
   }, [allAttendanceHistory]);
+
+  const changeattenddate = (type, value) => {
+    setAttenddate(prev => ({ ...prev, [type]: value }));
+  };
+
+  // Flexible filtering condition checking for either explicit matches or the 'all' wildcard
+  const filteredHistory = historyList.filter(record => {
+    const matchYear = attenddate.year === 'all' || (record.year && String(record.year) === attenddate.year);
+    const matchMonth = attenddate.month === 'all' || (record.month && record.month.toLowerCase() === attenddate.month.toLowerCase());
+    const matchWeek = attenddate.week === 'all' || (record.week && record.week.toLowerCase() === attenddate.week.toLowerCase());
+    return matchYear && matchMonth && matchWeek;
+  });
 
   const generatePDF = (record) => {
     const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
@@ -54,7 +86,7 @@ const AttendanceHistoryPage = () => {
     const absent = roll.filter(s => s.present === false);
     if (absent.length > 0) addTableSection("Isolated Absentee Roll Summary", absent.map((s, i) => [i + 1, s.title, 'Absent']), [186, 26, 26]);
 
-    doc.save(`Attendance_${currentclass== "6" ? "6 to 8" : currentclass == "4" ? "4 to 5":"9 to 12"}_${record.year}_${record.month}_${record.week.replace(/ /g, '_')}.pdf`);
+    doc.save(`Attendance_${currentclass === "6" ? "6 to 8" : currentclass === "4" ? "4 to 5" : "9 to 12"}_${record.year}_${record.month}_${record.week.replace(/ /g, '_')}.pdf`);
   };
 
   return (
@@ -62,24 +94,40 @@ const AttendanceHistoryPage = () => {
       <Navbar refreshfuc={fetchAllHistory}/>
       <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
         
-        <motion.div variants={anim.header} initial="hidden" animate="show" className="w-full py-6 flex items-center gap-3 justify-between max-sm:justify-center border-b border-[#CAC4D0]/30 mb-6">
+        {/* Header Section */}
+        <motion.div variants={anim.header} initial="hidden" animate="show" className="w-full py-6 flex flex-col md:flex-row gap-4 items-start md:items-center justify-between border-b border-[#CAC4D0]/30 mb-6">
           <div className="flex gap-3 items-center">
             <motion.div whileHover={{ scale: 1.05, rotate: 5 }} whileTap={{ scale: 0.95 }} className="p-2.5 bg-[#EADDFF] text-[#21005D] rounded-xl m3-elevation-1 cursor-pointer"><Calendar size={22} /></motion.div>
             <div>
               <h1 className="text-xl font-bold tracking-tight text-[#1C1B1F] capitalize">Attendance History</h1>
               <p className="text-xs font-medium text-[#49454F] mt-0.5">Browse past sheets and export detailed reporting sheets</p>
             </div>
-          </div> 
+          </div>
+
+          {/* Selection Dropdowns updated with 'all' option variants */}
+          <div className="flex gap-2 w-full sm:w-auto">
+            <DateSelect type="year" onchange={changeattenddate} value={attenddate.year} options={['all', '2026', '2025']} />
+            <DateSelect type="month" onchange={changeattenddate} value={attenddate.month} options={['all', 'january','february','march','april','may','june','july','august','september','october','november','december']} />
+            <DateSelect type="week" onchange={changeattenddate} value={attenddate.week} options={['all', 'week 1','week 2','week 3','week 4','week 5']} />
+          </div>
         </motion.div>
 
+        {/* Dynamic Card Container Array */}
         <motion.div variants={anim.container} initial="hidden" animate="show" className="flex flex-col gap-3">
           <AnimatePresence mode="popLayout">
-            {historyList.map((record) => {
+            {filteredHistory.map((record) => {
               const roll = record.attroll?.find(c => c.theclass === currentclass)?.roll || [];
               const stats = [{ label: 'Total', val: roll.length, cls: 'text-[#1C1B1F]' }, { label: 'Present', val: roll.filter(s => s.present === true).length, cls: 'text-[#386A20]' }, { label: 'Absent', val: roll.filter(s => s.present === false).length, cls: 'text-[#BA1A1A]' }];
 
               return (
-                <motion.div layout variants={anim.card} key={record._id || record.id} exit="exit" whileHover={{ scale: 1.012, y: -2, boxShadow: "0px 4px 12px rgba(103, 80, 164, 0.08)", borderColor: "rgba(103, 80, 164, 0.2)" }} className="w-full bg-[#F7F2FA] p-5 rounded-2xl border border-[#CAC4D0]/20 m3-elevation-1 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 transition-colors duration-200">
+                <motion.div 
+                  layout 
+                  variants={anim.card} 
+                  key={record._id || record.id} 
+                  exit="exit" 
+                  whileHover={{ scale: 1.012, y: -2, boxShadow: "0px 4px 12px rgba(103, 80, 164, 0.08)", borderColor: "rgba(103, 80, 164, 0.2)" }} 
+                  className="w-full bg-[#F7F2FA] p-5 rounded-2xl border border-[#CAC4D0]/20 m3-elevation-1 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 transition-colors duration-200"
+                >
                   <div>
                     <h4 className="text-sm font-bold text-[#1C1B1F] capitalize flex items-center gap-2"><Layers size={14} className="text-[#6750A4]" />{record.month} {record.year} — <span className="text-[#6750A4]">{record.week}</span></h4>
                     <div className="flex items-center gap-3 mt-1.5 text-xs font-medium text-[#49454F]">
@@ -94,7 +142,13 @@ const AttendanceHistoryPage = () => {
               );
             })}
           </AnimatePresence>
-          {historyList.length === 0 && <motion.div initial={{ opacity: 0, scale: 0.92 }} animate={{ opacity: 1, scale: 1 }} className="w-full text-center py-16 bg-[#F7F2FA] border border-dashed border-[#CAC4D0] rounded-[32px] text-[#49454F] font-medium text-sm">No historical data logs match the active class selection profiles.</motion.div>}
+          
+          {/* Fallback Display For Empty Roster Matches */}
+          {filteredHistory.length === 0 && (
+            <motion.div initial={{ opacity: 0, scale: 0.92 }} animate={{ opacity: 1, scale: 1 }} className="w-full text-center py-16 bg-[#F7F2FA] border border-dashed border-[#CAC4D0] rounded-[32px] text-[#49454F] font-medium text-sm">
+              No historical data logs match the active class selection profiles.
+            </motion.div>
+          )}
         </motion.div>
 
       </div>
