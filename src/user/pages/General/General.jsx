@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import ClassDropDown from './ClassDropdown'
-import CardGrid from './Cards'
 import church from '../../../images/church.png'
 import toddlers from '../../../images/toddlers.png'
 import teenagers from '../../../images/teenagers.png'
