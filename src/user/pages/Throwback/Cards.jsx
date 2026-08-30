@@ -24,7 +24,7 @@ export default function CardGrid({setrefreshf}) {
 
   return (
     <div >
-      <div className="w-full relative min-h-screen overflow-y-auto bg-gray-50 dark:bg-gray-900 p-6 text-gray-900 dark:text-white transition-colors duration-300">
+      <div className="w-full mb-20 relative min-h-screen overflow-y-auto bg-gray-50 dark:bg-gray-900 p-6 text-gray-900 dark:text-white transition-colors duration-300">
 
         {showmodal.show && <ViewImage src={showmodal.src} show={setshowmodal}/>}
         {/* Responsive Grid */}

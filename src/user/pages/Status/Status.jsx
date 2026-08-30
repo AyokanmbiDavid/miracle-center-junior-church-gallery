@@ -11,7 +11,7 @@ const Status = () => {
 
   return (
     <>
-    <div className="relative p-3 overflow-y-auto">
+    <div className="relative p-3 overflow-y-auto mb-20">
         {/* top */}
         <div className="w-full flex max-sm:flex-col justify-between dark:text-white">
           <div className="">

@@ -79,7 +79,7 @@ const Sidebar = () => {
                   animate={{ opacity: 1, x: 0, scale: 1 }}
                   exit={{ opacity: 0, x: -10, scale: 0.95 }}
                   transition={{ duration: 0.15, ease: "easeOut" }}
-                  className="absolute left-full ml-3 px-2.5 py-1.5 bg-zinc-800 text-white text-xs font-medium rounded-md whitespace-nowrap shadow-xl pointer-events-none z-20"
+                  className="absolute left-full z-60 ml-3 px-2.5 py-1.5 bg-zinc-800 text-white text-xs font-medium rounded-md whitespace-nowrap shadow-xl pointer-events-none z-20"
                 >
                   {tab.label}
                 </motion.div>
