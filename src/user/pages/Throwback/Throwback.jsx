@@ -4,7 +4,7 @@ import CardGrid from './Cards'
 const Throwback = () => {
   return (
     <div>
-      <div className="w-full p-2 flex justify-between items-center dark:text-white">
+      <div className="w-full p-2 flex max-sm:flex-col justify-between items-center dark:text-white">
         <h1 className="font-bold text-lg">
             Throwback Pictures
         </h1>
