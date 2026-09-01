@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Image, Heart, ShareNetwork, Sun, Moon, DownloadSimpleIcon,EyeIcon} from "@phosphor-icons/react";
 import { gallery } from '../../../components/ContextProvider'
-import ViewImage from "./ViewImage";
+import ViewImage from "../../../components/ViewImage";
 
 const CARDS_COUNT = 10;
 

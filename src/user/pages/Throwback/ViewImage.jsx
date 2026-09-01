@@ -5,7 +5,7 @@ import { XIcon } from 'lucide-react'
 const ViewImage = ({src,show}) => {
   return (
     <>
-        <div className="w-full h-full max-md:h-[1000px] z-30 flex justify-center items-start absolute top-0 left-0 bg-gray-100 dark:bg-gray-800 rounded-2xl ">
+        <div className="w-full h-full max-md:h-[1000px] z-30 flex justify-center items-start fixed top-0 left-0 bg-gray-100 dark:bg-gray-800 rounded-2xl ">
         <motion.div
         initial={{opacity:0.3,scale:0.8}}
         animate={{opacity:1,scale:1}}

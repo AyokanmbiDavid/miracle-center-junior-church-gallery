@@ -5,6 +5,7 @@ import toddlers from '../../../images/toddlers.png'
 import teenagers from '../../../images/teenagers.png'
 import Children from '../../../images/Children.jpg'
 import { ChevronRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 const General = () => {
   const [currentclass, setcurrentclass] = useState('All')
@@ -67,11 +68,13 @@ const General = () => {
                         <img src={item.img} className='h-35 w-full object-cover rounded-lg' />
                       </div>
 
-                      <div className={`absolute bottom-2 right-5 rounded-full border-2 border-blue-500 bg-blue-300/80 text-blue-800 cursor-pointer`}>
+                      <Link
+                      to={`/classes/${index + 1}`}
+                       className={`absolute bottom-2 right-5 rounded-full border-2 border-blue-500 bg-blue-300/80 text-blue-800 cursor-pointer`}>
                         <div className="rounded-full flex p-3 px-4 justify-center items-center">
                           <ChevronRight size={20}/>
                         </div>
-                      </div>
+                      </Link>
                 </div>
               </>
             ))}

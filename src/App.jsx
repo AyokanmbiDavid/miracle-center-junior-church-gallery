@@ -6,6 +6,7 @@ import General from './user/pages/General/General'
 import Status from './user/pages/Status/Status'
 import Throwback from './user/pages/Throwback/Throwback'
 import AdminPage from './admin/pages/AdminPage/AdminPage'
+import SubGeneral from './user/pages/General/SubGeneral'
 
 const App = () => {
   const [refreshfunc,setrefreshfunc] = useState()
@@ -31,6 +32,7 @@ const App = () => {
             <Route path='/dailystatus' element={<Status/>} />
             <Route path='/throwback' element={<Throwback/>}/>
             <Route path='/admin' element={<AdminPage/>}/>
+            <Route path="/classes/:id" element={<SubGeneral/>}/>
           </Routes>
         </div>
       </div>

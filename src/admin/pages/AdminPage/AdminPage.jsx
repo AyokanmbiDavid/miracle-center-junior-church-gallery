@@ -3,12 +3,14 @@ import { gallery } from '../../../components/ContextProvider';
 import { Link } from 'react-router-dom';
 import {motion,AnimatePresence} from 'framer-motion'
 import { SquaresFourIcon,ArchiveBoxIcon,Pulse,CircleNotchIcon,LockKeyIcon } from "@phosphor-icons/react";
+import General from './General/General';
+import Status from './Status/Status';
+import Throwback from './Throwback/Throwback';
 
 const tabs = [
   { id: "General", label: "General", icon: SquaresFourIcon,link:'/' },
   { id: "Status", label: "Status", icon: Pulse,link:'/dailystatus'  },
   { id: "ThrowBack", label: "Throwbacks", icon: ArchiveBoxIcon,link:'/throwback'  },
-  { id: "AdminPage", label: "Admin Page", icon: LockKeyIcon,link:'/admin'  },
 ];
 
 const AdminPage = () => {
@@ -77,6 +79,8 @@ const AdminPage = () => {
             
                 </div>
         </div>
+
+        {activeTab == 'General' ? <General/> : activeTab == 'Status' ? <Status/> : <Throwback/>}
     </>
   )
 }

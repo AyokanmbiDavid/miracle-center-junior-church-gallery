@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Image, Heart, ShareNetwork, Sun, Moon, DownloadSimpleIcon,EyeIcon,HeartIcon} from "@phosphor-icons/react";
+import { Image, Heart, ShareNetwork, Sun, Moon, DownloadSimpleIcon,EyeIcon, DownloadIcon, TrashIcon, PenIcon, HeartIcon} from "@phosphor-icons/react";
 import { gallery } from '../../../components/ContextProvider'
-import ViewImage from "./ViewImage";
+import ViewImage from "../../../components/ViewImage";
+
 const CARDS_COUNT = 10;
 
-export default function CardGrid({setrefreshf,datas}) {
+export default function CardGrid({setrefreshf}) {
   const [loading, setLoading] = useState(true);
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [showmodal,setshowmodal] = useState({show:false,src:'mm'})
@@ -23,7 +24,7 @@ export default function CardGrid({setrefreshf,datas}) {
 
   return (
     <div >
-      <div className="w-full mb-20 relative min-h-screen overflow-y-auto bg-gray-50 dark:bg-gray-900 p-6 text-gray-900 dark:text-white transition-colors duration-300">
+      <div className="w-full rounded-3xl relative min-h-screen overflow-y-auto bg-gray-50 dark:bg-gray-900 p-6 text-gray-900 dark:text-white transition-colors duration-300">
 
         {showmodal.show && <ViewImage src={showmodal.src} show={setshowmodal}/>}
         {/* Responsive Grid */}
@@ -33,8 +34,8 @@ export default function CardGrid({setrefreshf,datas}) {
               ? Array.from({ length: CARDS_COUNT }).map((_, index) => (
                   <SkeletonCard key={`skeleton-${index}`} />
                 ))
-              : datas.map((item, index) => (
-                  <ActualCard key={`card-${index}`} title={item.title} src={item.src} likes={item.likes} setshowmodal={setshowmodal} />
+              : Array.from({ length: CARDS_COUNT }).map((_, index) => (
+                  <ActualCard key={`card-${index}`} id={index + 1} setshowmodal={setshowmodal} />
                 ))}
           </AnimatePresence>
         </div>
@@ -92,7 +93,7 @@ const SkeletonCard = () => (
 );
 
 /* --- LOADED CONTENT CARD --- */
-const ActualCard = ({ id, setshowmodal,src,likes,title}) => (
+const ActualCard = ({ id, setshowmodal}) => (
   <motion.div
     initial={{ opacity: 0, y: 12, scale: 0.98 }}
     animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -102,30 +103,31 @@ const ActualCard = ({ id, setshowmodal,src,likes,title}) => (
     {/* Image Preview */}
     <div className="w-full h-40 bg-gray-100 dark:bg-gray-800 rounded-t-lg overflow-hidden relative flex items-center justify-center">
       <img
-        src={src}
+        src={`https://picsum.photos/seed/${id + 50}/300/200`}
+        alt={`Item ${id}`}
         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
       />
     </div>
 
     {/* Content details */}
     <div className="p-3">
-      <h3 className="text-gray-900 dark:text-white font-semibold text-sm">{title}</h3>
-      <p className="text-gray-500 dark:text-gray-400 text-xs mt-1 flex gap-3 ">{likes} <HeartIcon weight="fill" className="text-red-800"/></p>
+      <h3 className="text-gray-900 dark:text-white font-semibold text-sm">Media Item #{id}</h3>
+      <p className="text-gray-500 dark:text-gray-400 text-xs mt-1 flex gap-3 ">20 <HeartIcon weight="fill" className="text-red-800"/></p>
     </div>
 
     {/* Card Footer */}
     <div className="flex justify-between items-center mt-auto pt-2 p-2 border-t border-gray-100 dark:border-gray-800 text-gray-400 dark:text-gray-400">
-      <button className="p-1 hover:text-red-500 transition-colors cursor-pointer">
-        <Heart size={18} />
+      {/* download */}
+      <button className="p-3 bg-gray-200 dark:bg-gray-700 rounded-xl cursor-pointer">
+        <DownloadIcon />
       </button>
-      <button className="p-1 hover:text-blue-500 transition-colors cursor-pointer">
-        <DownloadSimpleIcon size={18} />
+      {/* delete */}
+      <button className="p-3 bg-red-200 text-red-800 dark:text-red-200  dark:bg-red-700/50 rounded-xl cursor-pointer">
+        <TrashIcon />
       </button>
-      <button 
-      onClick={() => {setshowmodal({show: true,src:`https://picsum.photos/seed/${id + 50}/300/200`});console.log(showmodal);
-      }}
-      className="p-1 hover:text-blue-500 transition-colors cursor-pointer">
-        <EyeIcon size={18} />
+      {/* update */}
+      <button className="p-3 bg-blue-600 text-white rounded-xl flex text-xs gap-3 cursor-pointer">
+        <PenIcon /> Update
       </button>
     </div>
   </motion.div>
