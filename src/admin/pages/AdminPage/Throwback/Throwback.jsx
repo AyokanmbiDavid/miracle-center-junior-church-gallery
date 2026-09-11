@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { MagnifyingGlass, Plus, ArchiveBoxIcon } from '@phosphor-icons/react';
-import ThrowBackCardGrid from './ThrowBackCardGrid.jsx';
+import ThrowBackCardGrid from './ThrowbackCardGrid.jsx';
 import ThrowbackFormModal from './ThrowbackFormModal.jsx';
 import { createThrowback } from '../../../../axioscontroller';
 import toast from "react-hot-toast";
