@@ -1,0 +1,85 @@
+@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  user-select: none;
+  font-family: 'Comfortaa';
+  overflow: hidden;
+ }
+
+@font-face {
+  font-family: 'Comfortaa';
+  src: url("Comfortaa-VariableFont_wght.ttf") format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+.overflow-y-auto::-webkit-scrollbar{
+  display: none;
+}
+.overflow-x-auto::-webkit-scrollbar{
+  display: none;
+}
+
+ input:focus {
+  outline: none ;
+}
+
+.bg-grid{
+  background-image: linear-gradient(to right, rgba(17, 17, 17, 0.05) 1px, transparent 0.1px), linear-gradient(to bottom, rgba(17, 17, 17, 0.05) 1px, transparent 0.1px);
+  background-size: 50px 50px;
+}
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+.scene3d {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1000px;
+}
+
+.box3d {
+  width: 20px;
+  height: 20px;
+  border-radius: 12px;
+  transition: all 1s ease-in-out;
+  transform-style: preserve-3d;
+  animation: spin3d 1s linear infinite;
+}
+
+.box3d.circle {
+  border-radius: 50%;
+}
+
+@keyframes spin3d {
+  0% {
+    border-radius: 0%;
+  }
+  25% {
+    border-radius: 25%;
+  }
+  50% {
+    border-radius: 50%;
+  }
+  75% {
+    border-radius: 70%;
+  }
+  100% {
+    border-radius: 0%;
+  }
+}
+@custom-variant dark (&:where(.dark, .dark *))
+
+
