@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ClassDropDown from "./ClassDropDown";
+import ClassDropDown from "./ClassDropdown";
 import CardGrid from "./Cards";
 
 const Status = () => {
