@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { X, IdentificationCard, User, GraduationCap, UsersThree } from "@phosphor-icons/react";
-import ImageDropzone from "./ImageDropzone.jsx";
+import ImageDropzone from "./ImageDropZone.jsx";
 import { Loader2 } from "lucide-react";
 
 export default function MemberEditModal({ isOpen, onClose, initialData = null, onSave }) {
