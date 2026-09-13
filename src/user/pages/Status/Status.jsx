@@ -6,7 +6,7 @@ const Status = () => {
   const [currentFilter, setCurrentFilter] = useState("All");
 
   return (
-    <div className="relative p-3 overflow-y-auto mb-20">
+    <div className="relative overflow-y-auto mb-20">
       {/* Header Bar */}
       <div className="w-full flex max-sm:flex-col justify-between items-start sm:items-center dark:text-white mb-4 gap-4">
         <div>
