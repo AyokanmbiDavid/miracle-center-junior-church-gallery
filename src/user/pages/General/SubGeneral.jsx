@@ -84,7 +84,7 @@ export default function SubGeneral() {
   });
 
   return (
-    <div className="p-6 max-w-7xl mx-auto bg-stone-50 dark:bg-zinc-950 min-h-screen text-stone-800 dark:text-zinc-100 font-sans transition-colors duration-300 flex flex-col gap-6">
+    <div className="p-2 max-w-7xl mx-auto bg-stone-50 dark:bg-zinc-950 min-h-screen text-stone-800 dark:text-zinc-100 font-sans transition-colors duration-300 flex flex-col gap-6">
       <SubGeneralHeader
         activeTab={activeTab}
         setActiveTab={setActiveTab}
