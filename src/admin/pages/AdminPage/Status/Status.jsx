@@ -23,17 +23,17 @@ export default function Status() {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto bg-stone-50 dark:bg-zinc-950 min-h-screen text-stone-800 dark:text-zinc-100 font-sans transition-colors duration-300">
+    <div className="p-2 max-w-7xl mx-auto bg-stone-50 dark:bg-zinc-950 min-h-screen text-stone-800 dark:text-zinc-100 font-sans transition-colors duration-300">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 pb-6 border-b border-stone-200 dark:border-zinc-900">
         <div>
           <h1 className="text-xl font-bold text-amber-700 dark:text-amber-500 uppercase flex items-center gap-2">
-            <CalendarBlank size={24} weight="duotone" /> Sunday Broadcasts
+            <CalendarBlank size={24} weight="duotone" /> Sunday Services Pictures 
           </h1>
           <p className="text-xs text-stone-500 dark:text-zinc-400 mt-1 font-medium">Publish service highlights and announcements for the fold.</p>
         </div>
 
-        <div className="flex items-center gap-3 max-md:w-full">
-          <div className="relative flex-1 md:w-64">
+        <div className="flex items-center gap-3 max-sm:flex-col max-md:w-full">
+          <div className="relative flex-1 md:w-64 max-sm:w-full">
             <MagnifyingGlass size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" />
             <input
               type="text"
