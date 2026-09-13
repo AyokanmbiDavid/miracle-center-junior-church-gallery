@@ -22,7 +22,7 @@ export default function Sidebar() {
   }, [location.pathname]);
 
   return (
-    <div className="h-screen w-16 flex flex-col justify-between items-center py-5 bg-white dark:bg-gray-900 transition-colors duration-300">
+    <div className="h-screen w-10 flex flex-col justify-between items-center py-5 bg-white dark:bg-gray-900 transition-colors duration-300">
       
       {/* Navigation Pipeline Link Group */}
       <nav className="flex flex-col gap-4 w-full px-2">
@@ -64,7 +64,7 @@ export default function Sidebar() {
                   isActive ? "text-green-600 dark:text-green-400" : "text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-200"
                 }`}
               >
-                <Icon size={20} weight={isActive ? "fill" : "bold"} />
+                <Icon size={15} weight={isActive ? "fill" : "bold"} />
               </motion.div>
 
               {/* Hover Tooltip Overlay */}
