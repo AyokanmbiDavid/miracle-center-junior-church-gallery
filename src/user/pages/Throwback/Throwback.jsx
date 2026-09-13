@@ -84,7 +84,7 @@ export default function ThrowbacksMain() {
   };
 
   return (
-    <div className="w-full relative min-h-screen bg-stone-50 dark:bg-zinc-950 p-6 text-stone-800 dark:text-zinc-100 transition-colors duration-300">
+    <div className="w-full relative min-h-screen bg-stone-50 dark:bg-zinc-950 p-2 text-stone-800 dark:text-zinc-100 transition-colors duration-300">
       {viewingImage.show && (
         <ViewImage src={viewingImage.src} show={() => setViewingImage({ show: false, src: "" })} />
       )}
