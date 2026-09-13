@@ -46,7 +46,7 @@ const App = () => {
         <Sidebar refreshf={refreshfunc} />
 
         {/* Dynamic Scrollable Page Content View */}
-        <main className="flex-1 overflow-y-auto overflow-hidden h-[calc(100vh-64px)] p-4 sm:p-6 border-l border-t border-gray-200 dark:border-gray-800 transition-all duration-200 rounded-tl-3xl bg-white dark:bg-gray-950">
+        <main className="flex-1 overflow-y-auto overflow-hidden h-[calc(100vh-64px)] p-4 sm:p-2 border-l border-t border-gray-200 dark:border-gray-800 transition-all duration-200 rounded-tl-3xl bg-white dark:bg-gray-950">
           <Routes>
             <Route path="/" element={<General />} />
             <Route path="/dailystatus" element={<Status />} />
