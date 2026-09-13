@@ -37,7 +37,7 @@ export default function Sidebar() {
               onClick={() => setActiveTab(tab.id)}
               onMouseEnter={() => setHoveredTab(tab.id)}
               onMouseLeave={() => setHoveredTab(null)}
-              className="relative p-3 w-full bg-transparent border-0 cursor-pointer outline-none flex items-center justify-center rounded-xl group transition-all duration-200 active:translate-y-0.5"
+              className="relative p-2 w-full bg-transparent border-0 cursor-pointer outline-none flex items-center justify-center rounded-xl group transition-all duration-200 active:translate-y-0.5"
             >
               {/* Sliding 3D Active Pill Badge Layer */}
               {isActive && (
