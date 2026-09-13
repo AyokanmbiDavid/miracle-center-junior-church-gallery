@@ -22,10 +22,10 @@ export default function Sidebar() {
   }, [location.pathname]);
 
   return (
-    <div className="h-screen w-15 flex flex-col justify-between items-center py-5 bg-white dark:bg-gray-900 transition-colors duration-300">
+    <div className="h-screen w-12 flex flex-col justify-between items-center py-5 bg-white dark:bg-gray-900 transition-colors duration-300">
       
       {/* Navigation Pipeline Link Group */}
-      <nav className="flex flex-col gap-4 w-full px-1">
+      <nav className="flex flex-col gap-4 w-full px-2">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
