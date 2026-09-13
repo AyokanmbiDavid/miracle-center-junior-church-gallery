@@ -206,7 +206,7 @@ export default function GeneralCardGrid({ selectedClass = "All Departments", sea
           ) : (
             <div className="col-span-full text-center py-16 bg-white dark:bg-zinc-900/20 border border-dashed border-stone-200 dark:border-zinc-800 rounded-xl shadow-xs">
               <p className="text-xs font-semibold text-stone-400 dark:text-zinc-500 uppercase tracking-widest">
-                No souls found registered under this category.
+                No data recieved.
               </p>
             </div>
           )}
