@@ -23,7 +23,7 @@ export default function Status() {
   };
 
   return (
-    <div className="p-2 max-w-7xl mx-auto bg-stone-50 dark:bg-zinc-950 min-h-screen text-stone-800 dark:text-zinc-100 font-sans transition-colors duration-300">
+    <div className="p-2 pb-10 max-w-7xl mx-auto bg-stone-50 dark:bg-zinc-950 min-h-screen text-stone-800 dark:text-zinc-100 font-sans transition-colors duration-300">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 pb-6 border-b border-stone-200 dark:border-zinc-900">
         <div>
           <h1 className="text-xl font-bold text-amber-700 dark:text-amber-500 uppercase flex items-center gap-2">
