@@ -15,13 +15,13 @@ export default function SubGeneralHeader({ activeTab, setActiveTab, searchQuery,
         <h2 className="text-lg font-bold tracking-tight text-stone-900 dark:text-white uppercase">{currentClass} Sanctuary</h2>
       </div>
 
-      <div className="flex flex-wrap items-center gap-3">
-        <nav className="flex gap-1 p-1 bg-white dark:bg-zinc-900 rounded-xl border border-stone-200 dark:border-zinc-800 shadow-xs">
+      <div className="flex items-center gap-3">
+        <nav className="flex gap-1 oveflow-x-auto p-1 bg-white dark:bg-zinc-900 rounded-xl border border-stone-200 dark:border-zinc-800 shadow-xs">
           {TABS.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
             return (
-              <button key={tab.id} type="button" onClick={() => setActiveTab(tab.id)} className="relative px-3 py-1.5 bg-transparent border-0 cursor-pointer outline-none flex items-center gap-2 rounded-lg text-xs font-mono font-medium transition-colors">
+              <button key={tab.id} type="button" onClick={() => setActiveTab(tab.id)} className="relative px-3 py-1.5 shrink-0 bg-transparent border-0 cursor-pointer outline-none flex items-center gap-2 rounded-lg text-xs font-mono font-medium transition-colors">
                 {isActive && ( <motion.div layoutId="subActiveTab" className="absolute inset-0 bg-stone-100 dark:bg-zinc-800 rounded-lg border border-stone-200/60 dark:border-zinc-700/60 shadow-xs z-0" transition={{ type: "spring", stiffness: 450, damping: 32 }} /> )}
                 <span className={`relative z-10 flex items-center gap-1.5 ${isActive ? "text-amber-800 dark:text-amber-400 font-bold" : "text-stone-400 dark:text-zinc-500 hover:text-stone-700 dark:hover:text-zinc-300"}`}>
                   <Icon size={14} weight={isActive ? "fill" : "regular"} /> {tab.label}
