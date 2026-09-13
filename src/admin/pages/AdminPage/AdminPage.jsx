@@ -15,7 +15,7 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState(TABS[0].id);
 
   return (
-    <div className="min-h-screen w-full bg-stone-50 dark:bg-zinc-950 p-4 sm:p-6 text-stone-800 dark:text-zinc-100 transition-colors duration-300 font-sans antialiased">
+    <div className="min-h-screen w-full bg-stone-50 dark:bg-zinc-950 sm:p-2 text-stone-800 dark:text-zinc-100 transition-colors duration-300 font-sans antialiased">
       
       {/* Top Level Nav bar Row Layout Container */}
       <div className="w-full pb-4 border-b border-stone-200 dark:border-zinc-900 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
