@@ -6,9 +6,9 @@ import Status from './Status/Status';
 import Throwback from './Throwback/Throwback';
 
 const TABS = [
-  { id: "General", label: "Roster Management", icon: IdentificationCard },
-  { id: "Status", label: "Sunday Broadcasts", icon: Clock },
-  { id: "ThrowBack", label: "Sanctuary Memories", icon: ArchiveBoxIcon },
+  { id: "General", label: "Classes Roster", icon: IdentificationCard },
+  { id: "Status", label: "Sunday Broadcasts Status", icon: Clock },
+  { id: "ThrowBack", label: "Archived Memories", icon: ArchiveBoxIcon },
 ];
 
 export default function AdminPage() {
@@ -21,7 +21,7 @@ export default function AdminPage() {
       <div className="w-full pb-4 border-b border-stone-200 dark:border-zinc-900 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
         <div className="flex flex-col">
           <h1 className="text-sm font-mono font-bold uppercase tracking-widest text-amber-700 dark:text-amber-500">
-            Sanctuary Console Panel
+            Admin Panel
           </h1>
           <p className="text-[11px] text-stone-400 dark:text-zinc-500 font-mono mt-0.5">
             Synchronized system registry access matrix.
