@@ -5,7 +5,7 @@ import GeneralCardGrid from "./GeneralCardGrid.jsx";
 import MemberEditModal from "./MemberEditModal.jsx";
 import { createMember } from "../../../../axioscontroller";
 
-const CLASSES = ["All Departments", "Toddlers", "Children", "Pre-teens", "Teenagers"];
+const CLASSES = ["All Classes", "Toddlers", "Children", "Pre-teens", "Teenagers"];
 
 export default function General() {
   const [selectedClass, setSelectedClass] = useState("All Departments");
@@ -27,12 +27,12 @@ export default function General() {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto bg-stone-50 dark:bg-zinc-950 min-h-screen text-stone-800 dark:text-zinc-100 font-sans antialiased transition-colors duration-300">
+    <div className="p-2 max-w-7xl mx-auto bg-stone-50 dark:bg-zinc-950 min-h-screen text-stone-800 dark:text-zinc-100 font-sans antialiased transition-colors duration-300">
       {/* Church Style Header Block */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 pb-6 border-b border-stone-200 dark:border-zinc-900">
         <div>
           <h1 className="text-xl font-bold tracking-tight text-amber-700 dark:text-amber-500 uppercase flex items-center gap-2">
-            <Users size={24} weight="duotone" /> Church Fold Roster
+            <Users size={24} weight="duotone" /> Church Classes Roster
           </h1>
           <p className="text-xs text-stone-500 dark:text-zinc-400 font-medium mt-1">
             Nurturing our heritage. Managing members, teachers, and dynamic children's ministries.
