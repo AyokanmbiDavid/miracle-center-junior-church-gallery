@@ -15,7 +15,7 @@ export default function SubGeneralHeader({ activeTab, setActiveTab, searchQuery,
         <h2 className="text-lg font-bold tracking-tight text-stone-900 dark:text-white uppercase">{currentClass} Sanctuary</h2>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex flex-col items-center gap-3">
         <nav className="flex gap-1 oveflow-x-auto p-1 bg-white dark:bg-zinc-900 rounded-xl border border-stone-200 dark:border-zinc-800 shadow-xs">
           {TABS.map((tab) => {
             const Icon = tab.icon;
