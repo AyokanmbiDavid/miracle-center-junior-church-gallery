@@ -15,7 +15,7 @@ const classes = [
 
 export default function General() {
   return (
-    <div className="p-1 max-w-7xl mx-auto bg-stone-50 dark:bg-zinc-950 min-h-screen pb-20 text-stone-800 dark:text-zinc-100 font-sans transition-colors duration-300">
+    <div className="p-1 max-w-full mx-auto bg-stone-50 dark:bg-zinc-950 min-h-screen pb-20 text-stone-800 dark:text-zinc-100 font-sans transition-colors duration-300">
       
       {/* Supabase Church Hero Welcome Banner */}
       <div className="w-full relative h-52 flex rounded-xl border border-stone-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden shadow-xs mb-8">
