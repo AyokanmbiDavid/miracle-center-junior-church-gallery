@@ -25,14 +25,14 @@ const Navbar = () => {
   };
 
   return (
-    <div className="w-full p-3 flex justify-between items-center bg-white dark:bg-gray-900 transition-all duration-200">
+    <div className="w-full p-2 flex justify-between items-center bg-white dark:bg-gray-900 transition-all duration-200">
       <div className="flex gap-2 items-center">
         <div className="rounded-full">
           <img src={applogo} alt="App Logo" className="rounded-full h-10 w-10 object-cover" />
         </div>
 
         <div>
-          <h1 className="text-md text-gray-800 dark:text-white">
+          <h1 className="text-md max-sm:text-xs text-gray-800 dark:text-white">
             Junior church Gallery |
             <span className="font-bold">
                {location == '/' ? '' :
