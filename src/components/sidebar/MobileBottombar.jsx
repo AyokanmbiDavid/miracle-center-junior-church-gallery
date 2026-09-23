@@ -45,7 +45,6 @@ const MobileBottombar = () => {
                    <motion.div
                      layoutId="sidebar-active-pill"
                      className="absolute inset-0 z-0 bg-green-100 rounded-full "
-                       style={{ backgroundImage: `url(${firstsvg})`, backgroundRepeat: 'no-repeat', objectFit: 'cover' }}
                      transition={{
                        type: "spring",
                        stiffness: 420,
