@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SquaresFour, Clock, ArchiveBoxIcon, LockKey, ArrowClockwise } from "@phosphor-icons/react";
 import { Link, useLocation } from "react-router-dom";
-import firstsvg from './1.svg'
 
 const tabs = [
   { id: "General", label: "Fold Roster", icon: SquaresFour, link: "/" },
