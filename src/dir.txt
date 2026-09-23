@@ -1,0 +1,154 @@
+You can handle this by using **Node.js/Express** on your backend along with **Multer** (for handling image uploads) and the official **`googleapis`** library to upload files directly to your specific Google Drive folder.
+
+Once Google Drive uploads the file, you grab its `webViewLink` or `webContentLink` and save that along with your textual metadata (title, category, date) into MongoDB.
+
+---
+
+### Step 1: Set Up Google Drive API Access
+
+Before writing code, you need a Service Account key from Google Cloud:
+
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/).
+2. Create a project, enable the **Google Drive API**, and create a **Service Account**.
+3. Download the Service Account JSON key file (e.g., `service-account.json`) and place it in your backend project folder.
+4. Open the JSON file and copy the `client_email`.
+5. Open your specific Google Drive folder, click **Share**, and grant **Editor** access to that `client_email`.
+6. Copy the **Folder ID** from your Google Drive URL (it's the long string after `/folders/`).
+
+---
+
+### Step 2: Install Required Backend Packages
+
+Run this in your Node.js backend directory:
+
+```bash
+npm install express mongoose multer googleapis dotenv
+
+```
+
+---
+
+### Step 3: Write the Backend Upload Route
+
+Here is a full Express route that processes the image, uploads it to Drive, sets public view permissions, and saves the details to MongoDB:
+
+```javascript
+const express = require("express");
+const mongoose = require("mongoose");
+const multer = require("multer");
+const { google } = require("googleapis");
+const fs = require("fs");
+const path = require("path");
+
+const router = express.Router();
+
+// 1. Configure Multer to temporarily store files locally
+const upload = multer({ dest: "uploads/" });
+
+// 2. Configure Google Drive Auth using Service Account
+const auth = new google.auth.GoogleAuth({
+  keyFile: path.join(__dirname, "service-account.json"), // Path to your key
+  scopes: ["https://www.googleapis.com/auth/drive"],
+});
+const drive = google.drive({ version: "v3", auth });
+
+const GOOGLE_DRIVE_FOLDER_ID = "YOUR_SHARED_FOLDER_ID_HERE";
+
+// 3. Define MongoDB Schema & Model
+const GalleryItemSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  category: { type: String, default: "General" },
+  imageUrl: { type: String, required: true },
+  driveFileId: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },
+});
+
+const GalleryItem = mongoose.model("GalleryItem", GalleryItemSchema);
+
+// 4. Create Upload Endpoint
+router.post("/upload", upload.single("image"), async (req, res) => {
+  try {
+    const { title, category } = req.body;
+    const file = req.file;
+
+    if (!file) {
+      return res.status(400).json({ error: "No image file uploaded." });
+    }
+
+    // A. Upload file to specific Google Drive Folder
+    const driveResponse = await drive.files.create({
+      requestBody: {
+        name: file.originalname,
+        parents: [GOOGLE_DRIVE_FOLDER_ID],
+      },
+      media: {
+        mimeType: file.mimetype,
+        body: fs.createReadStream(file.path),
+      },
+      fields: "id, webViewLink, webContentLink",
+    });
+
+    const fileId = driveResponse.data.id;
+
+    // B. Make file publicly readable so users can view it in your app
+    await drive.permissions.create({
+      fileId: fileId,
+      requestBody: {
+        role: "reader",
+        type: "anyone",
+      },
+    });
+
+    // C. Clean up temporary local file
+    fs.unlinkSync(file.path);
+
+    // D. Save metadata + Drive image link to MongoDB
+    const newItem = new GalleryItem({
+      title,
+      category,
+      imageUrl: driveResponse.data.webViewLink,
+      driveFileId: fileId,
+    });
+
+    await newItem.save();
+
+    res.status(201).json({
+      message: "Uploaded successfully!",
+      data: newItem,
+    });
+  } catch (error) {
+    console.error("Upload error:", error);
+    res.status(500).json({ error: "Failed to upload image." });
+  }
+});
+
+module.exports = router;
+
+```
+
+---
+
+### Step 4: Send the Upload from React Frontend
+
+From React, send the file and text data using `FormData`:
+
+```javascript
+const handleUpload = async (file, title, category) => {
+  const formData = new FormData();
+  formData.append("image", file); // Must match upload.single("image")
+  formData.append("title", title);
+  formData.append("category", category);
+
+  try {
+    const response = await fetch("http://localhost:5000/api/upload", {
+      method: "POST",
+      body: formData,
+    });
+    const result = await response.json();
+    console.log("Saved to MongoDB:", result);
+  } catch (error) {
+    console.error("Upload failed:", error);
+  }
+};
+
+```

@@ -1,0 +1,128 @@
+@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* ==========================================================================
+     NEUTRAL CANVAS
+     ========================================================================== */
+  --google-bg: #ffffff;
+  --google-text-main: #202124;
+  --google-text-sub: #5f6368;
+  --google-border: #dadce0;
+
+  /* ==========================================================================
+     BLUE INTENSITY MATRIX (Info & Primary Navigation)
+     ========================================================================== */
+  --blue-lvl1: #1a73e8; font-weight: bold; /* Level 1: Thickest (Deep Ink / Text / Focus Borders) */
+  --blue-lvl2: #4285f4;                  /* Level 2: Core (Standard Brand Backgrounds / Filled Buttons) */
+  --blue-lvl3: #8ab4f8;                  /* Level 3: Soft Accent (Subtle borders / Highlighted lines) */
+  --blue-lvl4: #e8f0fe;                  /* Level 4: Lightest (Container surfaces / Subtle pill tints) */
+
+  /* ==========================================================================
+     GREEN INTENSITY MATRIX (Success & Completion)
+     ========================================================================== */
+  --green-lvl1: #137333;                 /* Level 1: Thickest (Deep Text / Dark Status Graphics) */
+  --green-lvl2: #34a853;                 /* Level 2: Core (Success states / Checkmarks) */
+  --green-lvl3: #81c995;                 /* Level 3: Soft Accent (Container boundary separators) */
+  --green-lvl4: #e6f4ea;                 /* Level 4: Lightest (Soft background status banner blocks) */
+
+  /* ==========================================================================
+     AMBER INTENSITY MATRIX (Alerts & System Attention)
+     ========================================================================== */
+  --amber-lvl1: #b06000;                 /* Level 1: Thickest (Deep text readouts / High-contrast badges) */
+  --amber-lvl2: #fbbc05;                 /* Level 2: Core (Attention flags / Star highlights) */
+  --amber-lvl3: #fdd663;                 /* Level 3: Soft Accent (Alert divider frames) */
+  --amber-lvl4: #fef7e0;                 /* Level 4: Lightest (Notification backdrops) */
+
+  /* ==========================================================================
+     RED INTENSITY MATRIX (Errors & Destructive Modals)
+     ========================================================================== */
+  --red-lvl1: #c5221f;                   /* Level 1: Thickest (Critical warning titles / Bold errors) */
+  --red-lvl2: #ea4335;                   /* Level 2: Core (System error states / Delete triggers) */
+  --red-lvl3: #f28b82;                   /* Level 3: Soft Accent (Dismissive line accents) */
+  --red-lvl4: #fce8e6;                   /* Level 4: Lightest (Failure status backgrounds) */
+}
+
+
+body {
+  user-select: none;
+  font-family: 'Comfortaa';
+  overflow: hidden;
+ }
+
+@font-face {
+  font-family: 'Comfortaa';
+  src: url("Poppins-Regular.ttf") format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+.overflow-y-auto::-webkit-scrollbar{
+  display: none;
+}
+.overflow-x-auto::-webkit-scrollbar{
+  display: none;
+}
+
+ input:focus {
+  outline: none ;
+}
+
+.bg-grid{
+  background-image: linear-gradient(to right, rgba(17, 17, 17, 0.05) 1px, transparent 0.1px), linear-gradient(to bottom, rgba(17, 17, 17, 0.05) 1px, transparent 0.1px);
+  background-size: 50px 50px;
+}
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+.scene3d {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1000px;
+}
+
+.box3d {
+  width: 20px;
+  height: 20px;
+  border-radius: 12px;
+  transition: all 1s ease-in-out;
+  transform-style: preserve-3d;
+  animation: spin3d 1s linear infinite;
+}
+
+.box3d.circle {
+  border-radius: 50%;
+}
+
+@keyframes spin3d {
+  0% {
+    border-radius: 0%;
+  }
+  25% {
+    border-radius: 25%;
+  }
+  50% {
+    border-radius: 50%;
+  }
+  75% {
+    border-radius: 70%;
+  }
+  100% {
+    border-radius: 0%;
+  }
+}
+@custom-variant dark (&:where(.dark, .dark *))
+
+
