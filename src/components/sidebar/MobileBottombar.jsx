@@ -18,7 +18,7 @@ const MobileBottombar = () => {
 
       useEffect(() => {
         const currentTab = tabs.find((t) => t.link === location.pathname);
-        if (currentTab) setActiveTab(currentTab.id);
+        if (currentTab) setActiveTab(currentTab.id); 
       }, [location.pathname]);
     
 
