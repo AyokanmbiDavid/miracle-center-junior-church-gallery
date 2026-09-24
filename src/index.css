@@ -45,19 +45,20 @@
   --red-lvl4: #fce8e6;                   /* Level 4: Lightest (Failure status backgrounds) */
 }
 
-
-body {
-  user-select: none;
-  font-family: 'Comfortaa';
-  overflow: hidden;
- }
-
 @font-face {
-  font-family: 'Comfortaa';
+  font-family: 'Poppins';
   src: url("Poppins-Regular.ttf") format('truetype');
 	font-weight: normal;
 	font-style: normal;
 }
+
+body {
+  user-select: none;
+  font-family: 'Poppins' sans-serif;
+  overflow: hidden;
+ }
+
+
 
 .overflow-y-auto::-webkit-scrollbar{
   display: none;
