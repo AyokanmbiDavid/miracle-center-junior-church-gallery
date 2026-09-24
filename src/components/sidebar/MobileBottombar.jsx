@@ -23,7 +23,7 @@ const MobileBottombar = () => {
     
 
   return (
-    <div className=" w-dhw flex-col flex justify-between items-center py-2 bg-white dark:bg-gray-900 transition-colors duration-300">
+    <div className=" w-full fixed bottom-0 flex-col flex justify-between items-center py-2 bg-white dark:bg-gray-900 transition-colors duration-300">
          
          {/* Navigation Pipeline Link Group */}
          <nav className="flex gap-4 w-full px-2">
